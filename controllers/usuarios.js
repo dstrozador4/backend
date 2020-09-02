@@ -8,9 +8,7 @@ const getUsuarios = async (req, res) => {
 	const desde = Number(req.query.desde) || 0;
 
 	const [usuarios, total] = await Promise.all([
-		Usuario.find({}, 'nombre email role google imagen')
-			.skip(desde)
-			.limit(5),
+		Usuario.find({}, 'nombre email role google imagen').skip(desde).limit(10),
 		Usuario.countDocuments(),
 	]);
 
@@ -47,13 +45,8 @@ const crearUsuario = async (req, res = response) => {
 
 		res.json({
 			ok: true,
-			usuarios: [
-				{
-					ok: 123,
-					usuario,
-					token,
-				},
-			],
+			token,
+			usuario,
 		});
 	} catch (error) {
 		console.log(error);
@@ -90,15 +83,21 @@ const actualizarUsuario = async (req, res = response) => {
 				});
 			}
 		}
-		campos.email = email;
-		const usuarioActualizado = await Usuario.findByIdAndUpdate(
-			uid,
-			campos,
-			{ new: true }
-		);
+
+		if (!usuarioDB.google) {
+			campos.email = email;
+		} else if (usuarioDB.email !== email) {
+			return res.status(400).json({
+				ok: false,
+				msg: 'Usuario de google no puede cambiar su correo',
+			});
+		}
+
+		const usuarioActualizado = await Usuario.findByIdAndUpdate(uid, campos, { new: true });
 
 		res.status(200).json({
 			ok: true,
+			msg: 'Usuario actualizado correctamente',
 			usuario: usuarioActualizado,
 		});
 	} catch (error) {

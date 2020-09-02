@@ -57,7 +57,7 @@ const googleSignIn = async (req = request, res = response) => {
 				nombre: name,
 				email,
 				password: '@@@',
-				img: picture,
+				imagen: picture,
 				google: true,
 			});
 		} else {
@@ -93,9 +93,19 @@ const renewToken = async (req, res = response) => {
 	//generar token
 	const token = await generarJWT(uid);
 
+	//Obtener usuario por UID
+	const usuarioDB = await Usuario.findById(uid);
+	if (!usuarioDB) {
+		return res.status(404).json({
+			ok: false,
+			msg: 'Usuario no encontrado',
+		});
+	}
+
 	res.json({
 		ok: true,
 		token,
+		usuarioDB,
 	});
 };
 

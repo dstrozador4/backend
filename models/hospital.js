@@ -5,6 +5,7 @@ const HospitalSchema = Schema(
 		nombre: {
 			type: String,
 			required: true,
+			unique: true,
 		},
 		imagen: {
 			type: String,
