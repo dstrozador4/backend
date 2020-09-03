@@ -1,9 +1,9 @@
-node_modules/
+/node_modules/
 
-uploads/hospitales/**.jpg
-uploads/hospitales/**.png
-uploads/hospitales/**.jpeg
-uploads/hospitales/**.gif
+/uploads/hospitales/**.jpg
+/uploads/hospitales/**.png
+/uploads/hospitales/**.jpeg
+/uploads/hospitales/**.gif
 
 uploads/usuarios/**.jpg
 uploads/usuarios/**.png
